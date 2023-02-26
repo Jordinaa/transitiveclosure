@@ -7,4 +7,4 @@
 ![example 2](src/example2-1.png)
 ![example 2](src/example2-2.png)
 ## example 3
-![example 3](src/example2.png)
+![example 3](src/example3.png)
