@@ -34,17 +34,23 @@ int main(){
             cout << "matrix size " << size << "x" << size << ":" << endl;
             printMatrix(matrices[matrix]);
             cout << endl;
-            // adds matrix
-            addMatrix(matrices[matrix], matrices[matrix]);
-            // squares matrix
-            multiplyMatrix(matrices[matrix], matrices[matrix]);
-            // cubes matrix
-            cubeMatrix(matrices[matrix]);
-            // matrix to the fourth power
-            fourthMatrix(matrices[matrix]);
-            isReflexive(matrices[matrix]);
-            isSymmetric(matrices[matrix]);
-            isTransitive(matrices[matrix]);
+            
+            // copied from the else function for predefined values
+            cout << "adding the matrix to its self results in: " << endl;
+            vector<vector<int>> addResult = addMatrix(matrices[matrix], matrices[matrix]);
+            printMatrix(addResult);
+
+            cout << "the result of the matrix to the power of 2 is: " << endl;
+            vector<vector<int>> squareResult = multiplyMatrix(matrices[matrix], matrices[matrix]);
+            printMatrix(squareResult);
+
+            cout << "the result of the matrix to the power of 3 is: " << endl;
+            vector<vector<int>> cubeResult = cubeMatrix(matrices[matrix]);
+            printMatrix(cubeResult);
+
+            cout << "the result of the matrix to the power of 4 is: " << endl;
+            vector<vector<int>> fourthResult = fourthMatrix(matrices[matrix]);
+            printMatrix(fourthResult);
 
             cout << "\n" << "the transitive closure is: " << endl;
             vector<vector<int>> transClos = transitiveClosure(matrices[matrix]);
