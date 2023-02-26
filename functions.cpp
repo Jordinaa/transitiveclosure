@@ -156,71 +156,61 @@ bool isTransitive(vector<vector<int>> matrix){
 }
 
 // finds transitive closure of a matrix
+// im not sure if this is wrong or right but the images provided in the rubrik i think are wrong
+// they should be 1s and 0s if I am not mistaken at least from my linear algebra class that makes sense to me. i could be comepletely wrong.
 vector<vector<int>> transitiveClosure(vector<vector<int>> matrix){
-    // gets size of matrix
-    int dimensions = matrix.size();
-    // inits. vectors
-    vector<vector<int>> closure, tempMatrix;
-    
-    // multiplies and adds it by itself for each dimension of the matrix
-    for (int stuff = 0; stuff < dimensions; stuff++){
-    // mults. matrix by itself for each dimension n
-        matrix = multiplyMatrix(matrix, matrix);
-    // now takes that value and adds it to a temporary value  
-        closure = addMatrix(closure, matrix);}
-
-    return closure;}
-
-// opens file with data that will be read in 
-vector<vector<int>> readMatrixFile(const string filename){
-    // open file
-    ifstream inputFile(filename);
-    if (!inputFile) {
-        cerr << "Failed to open file: " << filename << endl;
-        exit(1);}
-    vector<vector<int>> matrix;
-    string line;
-    int n = 0;
-    while (getline(inputFile, line)){
-        if (line.empty()){
-            continue;}
-
-        stringstream ss(line);
-        if (n == 0) {
-            // First line contains matrix size
-            ss >> n;
-            matrix.resize(n, vector<int>(n, 0));} 
-            else{
-            // Subsequent lines contain matrix rows
-            for (int j = 0; j < n; j++) {
-                ss >> matrix[n - 1][j];}
-            n--;
-            // says the matrix is done so we can run tests on the matrix
-            if (n == 0) {
-                // copied from the main function to reduce clutter in main
-                cout << "adding the matrix to its self results in: " << endl;
-                vector<vector<int>> addResult = addMatrix(matrix, matrix);
-                printMatrix(addResult);
-
-                cout << "the result of the matrix to the power of 2 is: " << endl;
-                vector<vector<int>> squareResult = multiplyMatrix(matrix, matrix);
-                printMatrix(squareResult);
-
-                cout << "the result of the matrix to the power of 3 is: " << endl;
-                vector<vector<int>> cubeResult = cubeMatrix(matrix);
-                printMatrix(cubeResult);
-
-                cout << "the result of the matrix to the power of 4 is: " << endl;
-                vector<vector<int>> fourthResult = fourthMatrix(matrix);
-                printMatrix(fourthResult);
-
-                // calls functions that check if matrix is reflexive, symmetric, transitive
-                isReflexive(matrix);
-                isSymmetric(matrix);
-                isTransitive(matrix);
-            }
+    int n = matrix.size();
+    // initialize the closure matrix to all zeroes
+    vector<vector<int>> closure(n, vector<int>(n, 0)); 
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+    // copy the original matrix to the closure matrix
+            closure[i][j] = matrix[i][j]; 
         }
     }
-    return matrix;
+    for (int k = 0; k < n; k++) {
+    // initialize a new matrix to all zeroes
+        vector<vector<int>> next(n, vector<int>(n, 0)); 
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++){
+    // update the new matrix using the transitive closure rule            
+                next[i][j] = closure[i][j] || (closure[i][k] && closure[k][j]); 
+            }
+        }
+    // set the closure matrix to the updated matrix
+        closure = next; 
+    }
+    return closure;
 }
 
+// reads file and take sfirst input for dimension of array and uses the rest of the line to fill in the
+vector<vector<vector<int>>> readMatrixFile(string filename) {
+    ifstream infile(filename);
+    if (!infile) {
+        cerr << "Error: File not found" << endl;
+        exit(1);
+    }
+    vector<vector<vector<int>>> matrices;
+    string line;
+    while (getline(infile, line)) {
+        istringstream iss(line);
+
+        // Read the first integer to get the matrix size
+        int n;
+        iss >> n;
+        // Create a matrix of size n x n
+        vector<vector<int>> matrix(n, vector<int>(n));
+        // Read the rest of the line and populate the matrix
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!(iss >> matrix[i][j])) {
+                    cerr << "Error: Not enough elements in the line for matrix of size " << n << endl;
+                    exit(1);
+                }
+            }
+        }
+        matrices.push_back(matrix);
+    }
+
+    return matrices;
+}

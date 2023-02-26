@@ -4,7 +4,7 @@ int main(){
     // inits const variable for filename 
     const string FILENAME = "data.txt";
 
-    // init choices 
+    // init. choices 
     vector<vector<int>> matrix;
     int choice = 0;
     int vectorChoice;
@@ -20,8 +20,34 @@ int main(){
 
     if(choice == 0){
         // read matrix function which takes in path for file
-        // assigns to vector in case you want to use it for something 
-        vector<vector<int>> file = readMatrixFile(FILENAME);
+        // assigns to vector of vectors of vectors so i can iterate through each one and do apply the function to it 
+        vector<vector<vector<int>>> matrices = readMatrixFile(FILENAME);
+        // takes size of array returned from readmatrixfunction because it returns an array of arrays
+        for (int matrix = 0; matrix < matrices.size(); matrix++){
+            // assigns the matrixes from the vector of vectors so we can use it for what ever we need. 
+            int size = matrices[matrix].size();
+            // prints the matrix size and the matrix
+            cout << "matrix size " << size << "x" << size << ":" << endl;
+            printMatrix(matrices[matrix]);
+            cout << endl;
+            // adds matrix
+            addMatrix(matrices[matrix], matrices[matrix]);
+            // squares matrix
+            multiplyMatrix(matrices[matrix], matrices[matrix]);
+            // cubes matrix
+            cubeMatrix(matrices[matrix]);
+            // matrix to the fourth power
+            fourthMatrix(matrices[matrix]);
+            isReflexive(matrices[matrix]);
+            isSymmetric(matrices[matrix]);
+            isTransitive(matrices[matrix]);
+
+            cout << "\n" << "the transitive closure is: " << endl;
+            vector<vector<int>> transClos = transitiveClosure(matrices[matrix]);
+            printMatrix(transClos);
+            cout << endl;
+        }
+        // cout << matrices.size();
     }
 
     // else statement which lets user decide of matrix size
