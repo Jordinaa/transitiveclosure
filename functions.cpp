@@ -160,6 +160,7 @@ bool isTransitive(vector<vector<int>> matrix){
 // they should be 1s and 0s if I am not mistaken at least from my linear algebra class that makes sense to me. i could be comepletely wrong.
 vector<vector<int>> transitiveClosure(vector<vector<int>> matrix){
     int n = matrix.size();
+    // int routes = matrix.size();
     // initialize the closure matrix to all zeroes
     vector<vector<int>> closure(n, vector<int>(n, 0)); 
     for (int i = 0; i < n; i++){
@@ -180,7 +181,30 @@ vector<vector<int>> transitiveClosure(vector<vector<int>> matrix){
     // set the closure matrix to the updated matrix
         closure = next; 
     }
+    // we can take this return vale and check for routes in another function
     return closure;
+}
+
+// checks for routes, takes the transitive closure matrix the start and if the row and column exist returns true else returns false
+bool routes(vector<vector<int>> routes, int start, int end){
+    if(routes[start][end] == 1){
+        cout << "there is a path between " << start << " and " << end << endl;
+        return true;}
+    else{
+        cout << "there is not a path between " << start << " and " << end << endl;
+        return false;}
+}
+
+// checks for user input
+bool checkInput(string input) {
+    if (input == "y") {
+        return true;
+    } else if (input == "n") {
+        return false;
+    } else {
+        cerr << "invalid make sure caps lock is off - enter 'y' or 'n'." << endl;
+        return false;
+    }
 }
 
 // reads file and take sfirst input for dimension of array and uses the rest of the line to fill in the
@@ -195,16 +219,16 @@ vector<vector<vector<int>>> readMatrixFile(string filename) {
     while (getline(infile, line)) {
         istringstream iss(line);
 
-        // Read the first integer to get the matrix size
+        // read the first integer to get the matrix size
         int n;
         iss >> n;
-        // Create a matrix of size n x n
+        // create a matrix of size n x n
         vector<vector<int>> matrix(n, vector<int>(n));
-        // Read the rest of the line and populate the matrix
+        // read the rest of the line and populate the matrix
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (!(iss >> matrix[i][j])) {
-                    cerr << "Error: Not enough elements in the line for matrix of size " << n << endl;
+                    cerr << "not enough elements in the line for matrix of size " << n << endl;
                     exit(1);
                 }
             }
@@ -214,3 +238,4 @@ vector<vector<vector<int>>> readMatrixFile(string filename) {
 
     return matrices;
 }
+

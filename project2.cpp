@@ -8,6 +8,10 @@ int main(){
     vector<vector<int>> matrix;
     int choice = 0;
     int vectorChoice;
+    // inits. route choice 
+    string routeChoice;
+    // init variables for routes
+    int start, end;
 
     // main menu screen
     cout << "enter the type of input to use: " << endl;
@@ -46,6 +50,20 @@ int main(){
             vector<vector<int>> transClos = transitiveClosure(matrices[matrix]);
             printMatrix(transClos);
             cout << endl;
+
+            cout << "do you want to check routes?" << endl;
+            cin >> routeChoice;
+            if (checkInput(routeChoice) == false){
+                continue;}
+            else{
+                cout << "enter starting value " << endl;
+                cin >> start;
+                cout << "enter ending value" << endl;
+                cin >> end;
+                routes(matrices[matrix], start, end);
+            }
+            
+
         }
         // cout << matrices.size();
     }
